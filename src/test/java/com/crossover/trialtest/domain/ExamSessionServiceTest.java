@@ -6,6 +6,7 @@ import com.crossover.trialtest.domain.participant.Participant;
 import com.crossover.trialtest.domain.question.Question;
 import com.crossover.trialtest.domain.question.QuestionRepo;
 import com.google.common.collect.ImmutableSet;
+import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -88,7 +89,7 @@ public class ExamSessionServiceTest {
         assertThat(session.isAnswerCorrect(4)).isTrue();
 
         assertThat(session.calculateScore()).isEqualTo(100);
-        Thread.sleep(1001);
+        Thread.sleep(1001); // math session duration is 1 seconds, this will make the duration passed
         service.finish(session);
         assertThat(session.getFinalScore()).isEqualTo(100);
         assertThat(session.getStatus()).isEqualTo(ExamStatus.Failed);
@@ -100,6 +101,7 @@ public class ExamSessionServiceTest {
     public void setup() {
         suyama = Samples.participants.suyama();
         math = Samples.exams.basicMath();
+        math.setDuration(Duration.standardSeconds(1));
 
         q1 = Samples.questions.basicMath1(); q1.setId(1);
         q2 = Samples.questions.basicMath2(); q2.setId(2);
