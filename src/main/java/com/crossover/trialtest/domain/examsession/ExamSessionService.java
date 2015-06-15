@@ -41,8 +41,8 @@ public class ExamSessionService extends DomainServiceBase<ExamSession> {
         return examSessionRepo.save(newSession);
     }
 
-    public ExamSession startSession(int participantId, int examId) {
-        return startSession(participantRepo.findOne(participantId), examRepo.findOne(examId));
+    public ExamSession startSession(String username, int examId) {
+        return startSession(participantRepo.getByUserName(username), examRepo.findOne(examId));
     }
 
     public void finish(ExamSession examSession) {

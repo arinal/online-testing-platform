@@ -8,6 +8,8 @@ import com.crossover.trialtest.domain.Samples;
 import com.crossover.trialtest.domain.examsession.ExamSession;
 import com.crossover.trialtest.domain.examsession.ExamSessionService;
 import com.crossover.trialtest.domain.examsession.SessionQuestion;
+import com.crossover.trialtest.domain.participant.Participant;
+import com.crossover.trialtest.domain.participant.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 
 @Transactional
 @RestController @RequestMapping("/examsession")
@@ -26,8 +29,8 @@ public class ExamSessionController extends RestControllerBase<ExamSessionRep, Ex
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/start/{examId}")
-    ResourceSupport start(@PathVariable int examId) {
-        ExamSession newSession = entityService.startSession(Samples.participants.suyama().getId(), examId);
+    ResourceSupport start(@PathVariable int examId, Principal principal) {
+        ExamSession newSession = entityService.startSession(principal.getName(), examId);
         ExamSessionRep dto = new ExamSessionRep(newSession);
         return toResource(dto);
     }
